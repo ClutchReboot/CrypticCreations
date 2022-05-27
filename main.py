@@ -60,9 +60,7 @@ class IncantationCreation:
 
         sentence_array = []
         for i in range(0, sentences):
-            sentence_array.append(self.create_sentence(
-                words=random.randint(3, 6)
-            ))
+            sentence_array.append(self.create_sentence(words=random.randint(3, 6)))
         return ' '.join(sentence_array)
 
 
