@@ -76,7 +76,8 @@ class RandomCreation(Creation):
 
         # Prevent too many additional_words from over powering smaller self.creation
         if len(additional_words) >= len(self.creation.split()):
-            return ' '.join(additional_words)
+            self.creation = ' '.join(additional_words)
+            return self.creation
 
         creation_array = self.creation.split()
         indexes_to_replace = random.sample(range(len(creation_array)), len(additional_words))
