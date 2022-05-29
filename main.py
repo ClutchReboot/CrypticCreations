@@ -10,8 +10,8 @@ class CreationType(Enum):
     PARAGRAPH = 'paragraph'
 
 
-class RandomCreation:
-    def __init__(self) -> None:
+class Creation:
+    def __init__(self):
         """
         Init creation and numerous settings.
         Variable creation is used to store the randomly created / manipulated string.
@@ -22,10 +22,31 @@ class RandomCreation:
         self.creation_type: CreationType = ''
         self._vowels: str = "aeiou"
         self._punctuation: str = ".....!?"
-        self._regex_restrictions = {
-            "word": '[^a-zA-Z0-9]+',
-            "sentence": '[^a-zA-Z0-9.!? ]+'
-        }
+
+    @staticmethod
+    def _sanitize_string(user_input: str | list) -> str | list:
+        """
+        Remove unwanted characters based on a whitelist in self.regex_restrictions
+        :param user_input: Expects sentence or paragraph.
+        :return: Sanitized string.
+        """
+
+        return re.sub("[^a-zA-Z0-9.!? ]+", '', user_input)
+
+    @staticmethod
+    def _sanitize_list(user_input: list) -> list:
+        """
+        Remove unwanted characters based on a whitelist in self.regex_restrictions
+        :param user_input: Expects list of words.
+        :return: Sanitized list.
+        """
+
+        return [re.sub("[^a-zA-Z0-9]+", '', _) for _ in user_input]
+
+
+class RandomCreation(Creation):
+    def __init__(self) -> None:
+        super().__init__()
 
     def create_word(self,
                     letters: int = 10,
@@ -104,7 +125,7 @@ class RandomCreation:
         if self.creation_type.value not in valid_types:
             return "Ensure creation_type is sentence or paragraph."
 
-        additional_words = self._sanitize_list(user_input=additional_words)
+        additional_words = super()._sanitize_list(user_input=additional_words)
 
         creation_array = self.creation.split(' ')
         indexes_to_replace = random.sample(range(len(creation_array)), len(additional_words))
@@ -116,26 +137,9 @@ class RandomCreation:
         self.creation = ' '.join(creation_array)
         return self.creation
 
-    def _sanitize_string(self, user_input: str) -> str:
-        """
-        Remove unwanted characters based on a whitelist in self.regex_restrictions
-        :param user_input: Expects sentence or paragraph.
-        :return: Sanitized string.
-        """
-
-        return re.sub(self._regex_restrictions['sentence'], '', user_input)
-
-    def _sanitize_list(self, user_input: list) -> list:
-        """
-        Remove unwanted characters based on a whitelist in self.regex_restrictions
-        :param user_input: Expects list of words.
-        :return: Sanitized list.
-        """
-
-        return [re.sub(self._regex_restrictions['word'], '', _) for _ in user_input]
-
 
 if __name__ == '__main__':
     x = RandomCreation()
     print(f"{x.create_paragraph()=}")
+    print(f"{x.creation_type=}")
     print(x.sprinkle_words(additional_words=['DOOM', 'MAKER', "OTHER", "THINGS"]))
