@@ -5,17 +5,17 @@ from enum import Enum
 
 
 class CreationType(Enum):
-    WORD = 'word'
-    SENTENCE = 'sentence'
-    PARAGRAPH = 'paragraph'
+    RANDOM_WORD = 'random_word'
+    RANDOM_SENTENCE = 'random_sentence'
+    RANDOM_PARAGRAPH = 'random_paragraph'
+    VALID_RANDOM_SPRINKLE = ['random_sentence', 'random_paragraph']
 
 
 class Creation:
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Init creation and numerous settings.
-        Variable creation is used to store the randomly created / manipulated string.
-        Variable _creation_type starts with type None expects one of 3 values. word, sentence, paragraph
+        Variable creation is used to store the created string that can be manipulated with different methods.
         """
 
         self.creation: str = ''
@@ -24,35 +24,75 @@ class Creation:
         self._punctuation: str = ".....!?"
 
     @staticmethod
-    def _sanitize_string(user_input: str | list) -> str | list:
+    def _sanitize(user_input: str | list) -> str | list:
         """
-        Remove unwanted characters based on a whitelist in self.regex_restrictions
-        :param user_input: Expects sentence or paragraph.
-        :return: Sanitized string.
-        """
-
-        return re.sub("[^a-zA-Z0-9.!? ]+", '', user_input)
-
-    @staticmethod
-    def _sanitize_list(user_input: list) -> list:
-        """
-        Remove unwanted characters based on a whitelist in self.regex_restrictions
-        :param user_input: Expects list of words.
-        :return: Sanitized list.
+        Remove unwanted characters based on a regex substitution.
+        :param user_input: Input that may have unwanted characters.
+        :return: Sanitized string or list.
         """
 
-        return [re.sub("[^a-zA-Z0-9]+", '', _) for _ in user_input]
+        if isinstance(user_input, str):
+            return re.sub("[^a-zA-Z0-9.!? ]+", '', user_input)
+        if isinstance(user_input, list):
+            return [re.sub("[^a-zA-Z0-9]+", '', _) for _ in user_input]
 
 
 class RandomCreation(Creation):
     def __init__(self) -> None:
         super().__init__()
 
-    def create_word(self,
-                    letters: int = 10,
-                    capitalize: bool = False,
-                    ensure_vowels: int = random.randint(1, 3)
-                    ) -> str:
+    def word(self, letters: int = 10, capitalize: bool = False, ensure_vowels: int = random.randint(1, 3)):
+        self.creation_type = CreationType.RANDOM_WORD
+        self.creation = self._create_word(letters=letters, capitalize=capitalize, ensure_vowels=ensure_vowels)
+        return self.creation
+
+    def sentence(self, words: int = 6, min_word_length: int = 3, max_word_length: int = 10):
+        self.creation_type = CreationType.RANDOM_SENTENCE
+        self.creation = self._create_sentence(
+            words=words,
+            min_word_length=min_word_length,
+            max_word_length=max_word_length
+        )
+        return self.creation
+
+    def paragraph(self, sentences: int = 4):
+        self.creation_type = CreationType.RANDOM_PARAGRAPH
+        self.creation = self._create_paragraph(sentences=sentences)
+        return self.creation
+
+    def sprinkle_words(self, additional_words: list) -> str:
+        """
+        Add words randomly throughout self.creation.
+        Validates that creation_type is either random_sentences or random_paragraphs.
+        Updates self.creation.
+        :param additional_words: Takes in a list of words.
+        :return: self.creation
+        """
+
+        if self.creation_type.value not in CreationType.VALID_RANDOM_SPRINKLE.value:
+            return "Ensure creation_type is random_sentence or random_paragraph."
+
+        additional_words = super()._sanitize(user_input=additional_words)
+
+        # Prevent too many additional_words from over powering smaller self.creation
+        if len(additional_words) >= len(self.creation.split()):
+            return ' '.join(additional_words)
+
+        creation_array = self.creation.split()
+        indexes_to_replace = random.sample(range(len(creation_array)), len(additional_words))
+        additional_words.reverse()
+
+        for index, _ in enumerate(creation_array.copy()):
+            if index in indexes_to_replace:
+                creation_array[index] = additional_words.pop()
+        self.creation = ' '.join(creation_array)
+        return self.creation
+
+    def _create_word(self,
+                     letters: int = 10,
+                     capitalize: bool = False,
+                     ensure_vowels: int = random.randint(1, 3)
+                     ) -> str:
 
         """
         Generate a random word.
@@ -70,15 +110,13 @@ class RandomCreation(Creation):
             else:
                 letter_array.append(random.choice(string.ascii_lowercase))
             ensure_vowels -= 1
-        self.creation = ''.join(letter_array)
-        self.creation_type = CreationType.WORD
-        return self.creation
+        return ''.join(letter_array)
 
-    def create_sentence(self,
-                        words: int = 6,
-                        min_word_length: int = 3,
-                        max_word_length: int = 10
-                        ) -> str:
+    def _create_sentence(self,
+                         words: int = 6,
+                         min_word_length: int = 3,
+                         max_word_length: int = 10
+                         ) -> str:
 
         """
         Create a sentence using the create_word method.
@@ -88,58 +126,31 @@ class RandomCreation(Creation):
         word_array = []
         for i in range(0, words):
             if not i:
-                word_array.append(self.create_word(
+                # Capitalize the first letter.
+                word_array.append(self._create_word(
                     capitalize=True,
                     letters=random.randint(min_word_length,
                                            max_word_length)
                 ))
             else:
-                word_array.append(self.create_word(letters=random.randint(min_word_length, max_word_length)))
+                word_array.append(self._create_word(letters=random.randint(min_word_length, max_word_length)))
 
         word_array[-1] += random.choice(self._punctuation)
-        self.creation = ' '.join(word_array)
-        self.creation_type = CreationType.SENTENCE
-        return self.creation
+        return ' '.join(word_array)
 
-    def create_paragraph(self, sentences: int = 4) -> str:
+    def _create_paragraph(self, sentences: int = 4) -> str:
         """
         Generate paragraph made up of random words and sentences.
         """
 
         sentence_array = []
         for i in range(0, sentences):
-            sentence_array.append(self.create_sentence(words=random.randint(3, 6)))
-        self.creation = ' '.join(sentence_array)
-        self.creation_type = CreationType.PARAGRAPH
-        return self.creation
-
-    def sprinkle_words(self, additional_words: list) -> str:
-        """
-        Add words randomly throughout self.creation.
-        Intended for sentences or paragraphs.
-        :param additional_words:
-        :return:
-        """
-
-        valid_types = ['sentence', 'paragraph']
-        if self.creation_type.value not in valid_types:
-            return "Ensure creation_type is sentence or paragraph."
-
-        additional_words = super()._sanitize_list(user_input=additional_words)
-
-        creation_array = self.creation.split(' ')
-        indexes_to_replace = random.sample(range(len(creation_array)), len(additional_words))
-        additional_words.reverse()
-
-        for index, _ in enumerate(creation_array.copy()):
-            if index in indexes_to_replace:
-                creation_array[index] = additional_words.pop()
-        self.creation = ' '.join(creation_array)
-        return self.creation
+            sentence_array.append(self._create_sentence(words=random.randint(3, 6)))
+        return ' '.join(sentence_array)
 
 
 if __name__ == '__main__':
     x = RandomCreation()
-    print(f"{x.create_paragraph()=}")
+    print(f"{x.paragraph(sentences=1)=}")
     print(f"{x.creation_type=}")
     print(x.sprinkle_words(additional_words=['DOOM', 'MAKER', "OTHER", "THINGS"]))
