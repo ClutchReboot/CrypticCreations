@@ -164,7 +164,7 @@ class CipherCreation(Creation):
         """
 
         super().__init__()
-        self.initial_string = text
+        self.initial_string = self._sanitize(user_input=text)
         self.cipher_types: list = []
 
     def basic(self, shift: int) -> str:
@@ -201,7 +201,7 @@ if __name__ == '__main__':
     x.paragraph()
     x.sprinkle_words(additional_words=['DOOM', 'MAKER', "OTHER", "THINGS"])
     print(f'{x.creation=}')
-    y = CipherCreation(text='Lame Message')
+    y = CipherCreation(text='Lame Message...')
     y.basic(shift=5)
     y.basic(shift=5)
     print(f"{y.initial_string, y.cipher_types, y.creation=}")
