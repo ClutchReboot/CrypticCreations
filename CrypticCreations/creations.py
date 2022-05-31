@@ -4,11 +4,17 @@ import re
 from enum import Enum
 
 
-class CreationType(Enum):
-    RANDOM_WORD = 'random_word'
-    RANDOM_SENTENCE = 'random_sentence'
-    RANDOM_PARAGRAPH = 'random_paragraph'
-    VALID_RANDOM_SPRINKLE = ['random_sentence', 'random_paragraph']
+class CipherType(Enum):
+    NONE = 'none'
+    BASIC_CIPHER = 'basic_cipher'
+
+
+class RandomType(Enum):
+    NONE = 'none'
+    WORD = 'word'
+    SENTENCE = 'sentence'
+    PARAGRAPH = 'paragraph'
+    VALID_RANDOM_SPRINKLE = ['sentence', 'paragraph']
 
 
 class Creation:
@@ -19,7 +25,6 @@ class Creation:
         """
 
         self.creation: str = ''
-        self.creation_type: CreationType = ''
         self._vowels: str = "aeiou"
         self._punctuation: str = ".....!?"
 
@@ -40,14 +45,15 @@ class Creation:
 class RandomCreation(Creation):
     def __init__(self) -> None:
         super().__init__()
+        self.random_type: RandomType = RandomType.NONE
 
-    def word(self, letters: int = 10, capitalize: bool = False, ensure_vowels: int = random.randint(1, 3)):
-        self.creation_type = CreationType.RANDOM_WORD
+    def word(self, letters: int = 10, capitalize: bool = False, ensure_vowels: int = random.randint(1, 3)) -> str:
+        self.random_type = RandomType.WORD
         self.creation = self._create_word(letters=letters, capitalize=capitalize, ensure_vowels=ensure_vowels)
         return self.creation
 
-    def sentence(self, words: int = 6, min_word_length: int = 3, max_word_length: int = 10):
-        self.creation_type = CreationType.RANDOM_SENTENCE
+    def sentence(self, words: int = 6, min_word_length: int = 3, max_word_length: int = 10) -> str:
+        self.random_type = RandomType.SENTENCE
         self.creation = self._create_sentence(
             words=words,
             min_word_length=min_word_length,
@@ -55,8 +61,8 @@ class RandomCreation(Creation):
         )
         return self.creation
 
-    def paragraph(self, sentences: int = 4):
-        self.creation_type = CreationType.RANDOM_PARAGRAPH
+    def paragraph(self, sentences: int = 4) -> str:
+        self.random_type = RandomType.PARAGRAPH
         self.creation = self._create_paragraph(sentences=sentences)
         return self.creation
 
@@ -69,7 +75,7 @@ class RandomCreation(Creation):
         :return: self.creation
         """
 
-        if self.creation_type.value not in CreationType.VALID_RANDOM_SPRINKLE.value:
+        if self.random_type.value not in RandomType.VALID_RANDOM_SPRINKLE.value:
             return "Ensure creation_type is random_sentence or random_paragraph."
 
         additional_words = super()._sanitize(user_input=additional_words)
@@ -150,8 +156,52 @@ class RandomCreation(Creation):
         return ' '.join(sentence_array)
 
 
+class CipherCreation(Creation):
+    def __init__(self, text: str):
+        """
+        initial_string is used to hold the original input used for the ciphers.
+        cipher_types is an array of all ciphers used on the initial_string
+        """
+
+        super().__init__()
+        self.initial_string = text
+        self.cipher_types: list = []
+
+    def basic(self, shift: int) -> str:
+        """
+        Utilize Basic Caeser Cipher. Numbers and special characters are ignored.
+        """
+
+        if not self.cipher_types:
+            self.creation = self.initial_string
+
+        self.creation = self._create_basic(shift=shift)
+        self.cipher_types.append(CipherType.BASIC_CIPHER)
+        return self.creation
+
+    def _create_basic(self, shift: int) -> str:
+        """
+        Basic Caeser Cipher. Numbers and special characters are ignored.
+        """
+
+        result = ""
+        for char in self.creation:
+            # Account for spaces and special chars.
+            if char not in string.ascii_letters:
+                result += char
+            elif char.isupper():
+                result += chr((ord(char) + shift - 65) % 26 + 65)
+            else:
+                result += chr((ord(char) + shift - 97) % 26 + 97)
+        return result
+
+
 if __name__ == '__main__':
     x = RandomCreation()
-    print(f"{x.paragraph(sentences=1)=}")
-    print(f"{x.creation_type=}")
-    print(x.sprinkle_words(additional_words=['DOOM', 'MAKER', "OTHER", "THINGS"]))
+    x.paragraph()
+    x.sprinkle_words(additional_words=['DOOM', 'MAKER', "OTHER", "THINGS"])
+    print(f'{x.creation=}')
+    y = CipherCreation(text='Lame Message')
+    y.basic(shift=5)
+    y.basic(shift=5)
+    print(f"{y.initial_string, y.cipher_types, y.creation=}")
