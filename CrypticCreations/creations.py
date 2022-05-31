@@ -1,20 +1,8 @@
 import random
 import string
 import re
-from enum import Enum
 
-
-class CipherType(Enum):
-    NONE = 'none'
-    BASIC_CIPHER = 'basic_cipher'
-
-
-class RandomType(Enum):
-    NONE = 'none'
-    WORD = 'word'
-    SENTENCE = 'sentence'
-    PARAGRAPH = 'paragraph'
-    VALID_RANDOM_SPRINKLE = ['sentence', 'paragraph']
+from .creation_types import *
 
 
 class Creation:
@@ -160,7 +148,7 @@ class CipherCreation(Creation):
     def __init__(self, text: str):
         """
         initial_string is used to hold the original input used for the ciphers.
-        cipher_types is an array of all ciphers used on the initial_string
+        cipher_types is an array of all ciphers used and their modifiers on the initial_string
         """
 
         super().__init__()
@@ -176,7 +164,11 @@ class CipherCreation(Creation):
             self.creation = self.initial_string
 
         self.creation = self._create_basic(shift=shift)
-        self.cipher_types.append(CipherType.BASIC_CIPHER)
+        _ = {
+            "cipher": CipherType.BASIC_CIPHER,
+            "shift": shift
+        }
+        self.cipher_types.append(_)
         return self.creation
 
     def _create_basic(self, shift: int) -> str:
@@ -194,14 +186,3 @@ class CipherCreation(Creation):
             else:
                 result += chr((ord(char) + shift - 97) % 26 + 97)
         return result
-
-
-if __name__ == '__main__':
-    x = RandomCreation()
-    x.paragraph()
-    x.sprinkle_words(additional_words=['DOOM', 'MAKER', "OTHER", "THINGS"])
-    print(f'{x.creation=}')
-    y = CipherCreation(text='Lame Message...')
-    y.basic(shift=5)
-    y.basic(shift=5)
-    print(f"{y.initial_string, y.cipher_types, y.creation=}")
