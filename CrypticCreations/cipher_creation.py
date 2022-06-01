@@ -11,7 +11,7 @@ class CipherCreation(Creation):
         """
 
         super().__init__()
-        self.plaintext = self._sanitize(user_input=text)
+        self.plaintext = self._sanitize(user_input=plaintext)
         self.cipher_types: list = []
 
     def caeser(self, shift: int) -> str:
@@ -20,7 +20,7 @@ class CipherCreation(Creation):
         """
 
         if not self.cipher_types:
-            self.creation = self.initial_string
+            self.creation = self.plaintext
 
         self.creation = ciphers.caeser(plaintext=self.creation, shift=shift)
 
