@@ -4,14 +4,14 @@ from . import ciphers
 
 
 class CipherCreation(Creation):
-    def __init__(self, text: str):
+    def __init__(self, plaintext: str):
         """
         initial_string is used to hold the original input used for the ciphers.
         cipher_types is an array of all ciphers used and their modifiers on the initial_string
         """
 
         super().__init__()
-        self.initial_string = self._sanitize(user_input=text)
+        self.plaintext = self._sanitize(user_input=text)
         self.cipher_types: list = []
 
     def caeser(self, shift: int) -> str:
