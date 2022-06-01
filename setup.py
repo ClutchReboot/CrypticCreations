@@ -4,7 +4,7 @@ from setuptools import setup
 # twine upload dist/*
 
 setup(name='CrypticCreations',
-      version='0.1.2',
+      version='0.2.0',
       description='Create ciphers or random strings for DnD players to try and read aloud for the group.',
       url='https://github.com/ClutchTech/CrypticCreations',
       keywords='dnd ciphers random CrypticCreations',
@@ -13,4 +13,6 @@ setup(name='CrypticCreations',
       license='GNU General Public License v2.0',
       packages=['CrypticCreations'],
       zip_safe=False,
-      long_description='Create ciphers or random strings for DnD players to try and read aloud for the group.')
+      long_description=open('README.md', 'rt').read(),
+      long_description_content_type='text/markdown'
+      )

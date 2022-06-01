@@ -1,7 +1,6 @@
-import string
-
 from .creations import Creation
 from .creation_types import CipherType
+from . import ciphers
 
 
 class CipherCreation(Creation):
@@ -15,7 +14,7 @@ class CipherCreation(Creation):
         self.initial_string = self._sanitize(user_input=text)
         self.cipher_types: list = []
 
-    def basic(self, shift: int) -> str:
+    def caeser(self, shift: int) -> str:
         """
         Utilize Basic Caeser Cipher. Numbers and special characters are ignored.
         """
@@ -23,26 +22,12 @@ class CipherCreation(Creation):
         if not self.cipher_types:
             self.creation = self.initial_string
 
-        self.creation = self._create_basic(shift=shift)
+        self.creation = ciphers.caeser(plaintext=self.creation, shift=shift)
+
         _ = {
-            "cipher": CipherType.BASIC_CIPHER,
+            "cipher": CipherType.CAESER_CIPHER,
             "shift": shift
         }
         self.cipher_types.append(_)
         return self.creation
 
-    def _create_basic(self, shift: int) -> str:
-        """
-        Basic Caeser Cipher. Numbers and special characters are ignored.
-        """
-
-        result = ""
-        for char in self.creation:
-            # Account for spaces and special chars.
-            if char not in string.ascii_letters:
-                result += char
-            elif char.isupper():
-                result += chr((ord(char) + shift - 65) % 26 + 65)
-            else:
-                result += chr((ord(char) + shift - 97) % 26 + 97)
-        return result

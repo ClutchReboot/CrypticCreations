@@ -38,7 +38,7 @@ class TestCipherCreations(unittest.TestCase):
         Does not remove spaces.
         """
         test = CrypticCreations.CipherCreation(text="This is testing spaces!?")
-        test.basic(shift=5)
+        test.caeser(shift=5)
         self.assertIn(' ',  test.creation)
 
     def test_has_special_chars(self):
@@ -46,7 +46,7 @@ class TestCipherCreations(unittest.TestCase):
         Does not remove special characters.
         """
         test = CrypticCreations.CipherCreation(text="This is testing special characters!?.")
-        test.basic(shift=5)
+        test.caeser(shift=5)
         self.assertIn('!?.', test.creation)
 
     def test_expected_output(self):
@@ -54,7 +54,7 @@ class TestCipherCreations(unittest.TestCase):
         Confirm expected output.
         """
         test = CrypticCreations.CipherCreation(text="Test.")
-        test.basic(shift=5)
+        test.caeser(shift=5)
         self.assertEqual(test.creation, 'Yjxy.')
 
 
