@@ -1,6 +1,6 @@
 from .creations import Creation
 from .creation_types import CipherType
-from . import ciphers
+from .ciphers import *
 
 
 class CipherCreation(Creation):
@@ -22,7 +22,7 @@ class CipherCreation(Creation):
         if not self.cipher_types:
             self.creation = self.plaintext
 
-        self.creation = ciphers.caeser(plaintext=self.creation, shift=shift)
+        self.creation = Caeser().encode(plaintext=self.creation, shift=shift)
 
         _ = {
             "cipher": CipherType.CAESER_CIPHER,
@@ -31,3 +31,27 @@ class CipherCreation(Creation):
         self.cipher_types.append(_)
         return self.creation
 
+    def caeser_bf(self) -> list:
+        """
+        Bruteforce all possible combinations of a string using Caeser's Cipher.
+        :return: List of Caeser's Cipher strings.
+        """
+        if not self.creation:
+            self.creation = self.plaintext
+        return Caeser().bruteforce(ciphered_text=self.creation)
+
+    def rot13(self) -> str:
+        """
+        Utilize ROT13 cipher. Numbers and special characters are ignored.
+        """
+
+        if not self.cipher_types:
+            self.creation = self.plaintext
+
+        self.creation = ciphers.rot13(plaintext=self.creation)
+
+        _ = {
+            "cipher": CipherType.ROT13_CIPHER
+        }
+        self.cipher_types.append(_)
+        return self.creation

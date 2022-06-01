@@ -57,6 +57,15 @@ class TestCipherCreations(unittest.TestCase):
         test.caeser(shift=5)
         self.assertEqual(test.creation, 'Yjxy.')
 
+    def test_plaintext_exists_in_bruteforce(self):
+        """
+        Confirm initial plaintext shows up in bruteforce results.
+        """
+        test = CrypticCreations.CipherCreation(plaintext="Test.")
+        test.caeser(shift=5)
+        bf_results = test.caeser_bf()
+        self.assertIn("Test.", bf_results)
+
 
 if __name__ == '__main__':
     unittest.main()
