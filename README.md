@@ -21,14 +21,14 @@ Lzquwzyuwi zot rqieeuue etouzyij WORDs erpaxupeh. Nwpeb axfixse THAT Clgu zheihy
 ```python
 import CrypticCreations
 
-x = CrypticCreations.CipherCreation(text='Sentence that will be encoded.')
-x.basic(shift=3)
+x = CrypticCreations.CipherCreation(text='Sentence to be enciphered.')
+x.caeser(shift=3)
 print(f"Message: {x.initial_string}")
-print(f"Encoded Message: {x.creation}")
+print(f"Enciphered Message: {x.creation}")
 ```
 
 ### Sample Output
 ```text
-Message: Sentence that will be encoded.
-Encoded Message: Vhqwhqfh wkdw zloo eh hqfrghg.
+Message: Sentence to be enciphered.
+Enciphered Message: Vhqwhqfh wr eh hqflskhuhg.
 ```
