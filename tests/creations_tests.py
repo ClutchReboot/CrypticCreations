@@ -2,8 +2,33 @@ import unittest
 
 import CrypticCreations
 
-# Run in terminal
-# python3 -m unittest tests/*
+
+class TestRandomCreations(unittest.TestCase):
+
+    def test_paragraph_has_spaces(self):
+        """
+        Paragraph method contains spaces.
+        """
+        test = CrypticCreations.RandomCreation()
+        test.paragraph()
+        self.assertIn(' ', test.creation)
+
+    def test_word_has_no_spaces(self):
+        """
+        Word method has no spaces.
+        """
+        test = CrypticCreations.RandomCreation()
+        test.word()
+        self.assertNotIn(' ', test.creation)
+
+    def test_sprinkled_word_exists(self):
+        """
+        Additional words added are present.
+        """
+        test = CrypticCreations.RandomCreation()
+        test.paragraph()
+        test.sprinkle_words(additional_words=['TEST'])
+        self.assertIn('TEST', test.creation)
 
 
 class TestCipherCreations(unittest.TestCase):
@@ -19,12 +44,19 @@ class TestCipherCreations(unittest.TestCase):
     def test_has_special_chars(self):
         """
         Does not remove special characters.
-        :return:
         """
         test = CrypticCreations.CipherCreation(text="This is testing special characters!?.")
         test.basic(shift=5)
         self.assertIn('!?.', test.creation)
 
+    def test_expected_output(self):
+        """
+        Confirm expected output.
+        """
+        test = CrypticCreations.CipherCreation(text="Test.")
+        test.basic(shift=5)
+        self.assertEqual(test.creation, 'Yjxy.')
+
 
 if __name__ == '__main__':
-    unittest.main(verbosity=3)
+    unittest.main()
