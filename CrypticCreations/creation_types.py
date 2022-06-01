@@ -3,7 +3,7 @@ from enum import Enum
 
 class CipherType(Enum):
     NONE = 'none'
-    BASIC_CIPHER = 'basic_cipher'
+    CAESER_CIPHER = 'caeser_cipher'
 
 
 class RandomType(Enum):
