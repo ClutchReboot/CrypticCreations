@@ -1,29 +1,27 @@
 import string
 
 
-def rot13(plaintext: str) -> str:
-    """
-    ROT13 Cipher. Identical to Caeser's Cipher but the shift is hard coded as 13.
-    """
+class ROT13:
 
-    def cipher(plain_letter: str) -> str:
+    @staticmethod
+    def encode(plaintext: str) -> str:
         """
-        ROT13 Cipher used on a single character.
-        :return: enciphered character
+        Caeser's Cipher used on a string.
+        :return: Ciphered string.
         """
 
-        cipher_shift = 13
-        if plain_letter.isupper():
-            return chr((ord(plain_letter) + cipher_shift - 65) % 26 + 65)
-        else:
-            return chr((ord(plain_letter) + cipher_shift - 97) % 26 + 97)
+        result = ""
+        shift = 13
 
-    result = ""
+        for char in plaintext:
+            # Account for spaces and special chars.
+            if char not in string.ascii_letters:
+                result += char
+            elif char.isupper():
+                result += chr((ord(char) + shift - 65) % 26 + 65)
+            else:
+                result += chr((ord(char) + shift - 97) % 26 + 97)
+        return result
 
-    for char in plaintext:
-        # Account for spaces and special chars.
-        if char not in string.ascii_letters:
-            result += char
-        else:
-            result += cipher(plain_letter=char)
-    return result
+    def bruteforce(self, ciphered_text: str) -> list:
+        return [self.encode(plaintext=ciphered_text)]
