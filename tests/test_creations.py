@@ -49,7 +49,7 @@ class TestCipherCreations(unittest.TestCase):
         test.caeser(shift=5)
         self.assertIn('!?.', test.creation)
 
-    def test_expected_output(self):
+    def test_caeser_expected_output(self):
         """
         Confirm expected output.
         """
@@ -65,6 +65,14 @@ class TestCipherCreations(unittest.TestCase):
         test.caeser(shift=5)
         bf_results = test.caeser_bf()
         self.assertIn("Test.", bf_results)
+
+    def test_rot13_expected_output(self):
+        """
+        Confirm expected output.
+        """
+        test = CrypticCreations.CipherCreation(plaintext="Test.")
+        test.rot13()
+        self.assertEqual(test.creation, 'Grfg.')
 
 
 if __name__ == '__main__':
