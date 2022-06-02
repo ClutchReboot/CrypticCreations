@@ -1,16 +1,17 @@
 import string
 
 
-class Caeser:
+class ROT13:
 
     @staticmethod
-    def encode(plaintext: str, shift: int) -> str:
+    def encode(plaintext: str) -> str:
         """
         Caeser's Cipher used on a string.
         :return: Ciphered string.
         """
 
         result = ""
+        shift = 13
 
         for char in plaintext:
             # Account for spaces and special chars.
@@ -23,7 +24,4 @@ class Caeser:
         return result
 
     def bruteforce(self, ciphered_text: str) -> list:
-        bf_results = []
-        for i in range(1, 26):
-            bf_results.append(self.encode(plaintext=ciphered_text, shift=i))
-        return bf_results
+        return [self.encode(plaintext=ciphered_text)]
