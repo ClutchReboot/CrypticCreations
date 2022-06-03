@@ -1,16 +1,16 @@
 from .creations import *
-from . import ciphers
+from .ciphers import *
 
 
 class CipherCreation(Creation):
-    def __init__(self, plaintext: str):
+    def __init__(self, text: str):
         """
         initial_string is used to hold the original input used for the ciphers.
         cipher_types is an array of all ciphers used and their modifiers on the initial_string
         """
 
         super().__init__()
-        self.plaintext = self._sanitize(user_input=plaintext)
+        self.text = self._sanitize(user_input=text)
         self.cipher_types: list = []
 
     def caeser(self, shift: int) -> str:
@@ -19,9 +19,9 @@ class CipherCreation(Creation):
         """
 
         if not self.cipher_types:
-            self.creation = self.plaintext
+            self.creation = self.text
 
-        self.creation = ciphers.caeser.cipher(plaintext=self.creation, shift=shift)
+        self.creation = CaeserCipher(text=self.creation, shift=shift).encipher()
 
         _ = {
             "cipher": CipherType.CAESER_CIPHER,
@@ -36,8 +36,8 @@ class CipherCreation(Creation):
         :return: List of Caeser's Cipher strings.
         """
         if not self.creation:
-            self.creation = self.plaintext
-        return ciphers.caeser.bruteforce(ciphered_text=self.creation)
+            self.creation = self.text
+        return CaeserCipher(text=self.creation).bruteforce()
 
     def rot13(self) -> str:
         """
@@ -45,9 +45,9 @@ class CipherCreation(Creation):
         """
 
         if not self.cipher_types:
-            self.creation = self.plaintext
+            self.creation = self.text
 
-        self.creation = ciphers.rot13.cipher(plaintext=self.creation)
+        self.creation = Rot13Cipher(text=self.creation).encipher()
 
         _ = {
             "cipher": CipherType.ROT13_CIPHER
@@ -62,5 +62,23 @@ class CipherCreation(Creation):
         """
 
         if not self.creation:
-            self.creation = self.plaintext
-        return ciphers.rot13.bruteforce(ciphered_text=self.creation)
+            self.creation = self.text
+        return Rot13Cipher(text=self.creation).bruteforce()
+
+    def affine(self, a_shift: int = 3, b_shift: int = 10) -> str:
+        """
+        Utilize Affine cipher. Numbers and special characters are ignored.
+        """
+
+        if not self.cipher_types:
+            self.creation = self.text
+
+        self.creation = AffineCipher(text=self.creation, a=a_shift, b=b_shift).encipher()
+
+        _ = {
+            "cipher": CipherType.AFFINE_CIPHER,
+            "a_shift": a_shift,
+            "b_shift": b_shift,
+        }
+        self.cipher_types.append(_)
+        return self.creation

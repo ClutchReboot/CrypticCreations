@@ -6,6 +6,7 @@ class CipherType(Enum):
     NONE = 'none'
     CAESER_CIPHER = 'caeser_cipher'
     ROT13_CIPHER = 'rot13_cipher'
+    AFFINE_CIPHER = 'affine_cipher'
 
 
 class RandomType(Enum):
