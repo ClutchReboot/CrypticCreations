@@ -14,5 +14,6 @@ setup(name='CrypticCreations',
       packages=['CrypticCreations', 'CrypticCreations.ciphers'],
       zip_safe=False,
       long_description=open('README.md', 'rt').read(),
-      long_description_content_type='text/markdown'
+      long_description_content_type='text/markdown',
+      python_requires='>=3.10'
       )
