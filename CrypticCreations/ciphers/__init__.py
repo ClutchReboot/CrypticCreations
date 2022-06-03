@@ -1,2 +1,2 @@
-from .caeser import *
-from .rot13 import *
+from . import caeser
+from . import rot13

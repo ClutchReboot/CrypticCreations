@@ -1,6 +1,6 @@
 import unittest
 
-from CrypticCreations.ciphers import ROT13
+from CrypticCreations import ciphers
 
 
 class TestCipherCreations(unittest.TestCase):
@@ -9,21 +9,21 @@ class TestCipherCreations(unittest.TestCase):
         """
         Does not remove spaces.
         """
-        test = ROT13.encode(plaintext="This is testing spaces!?")
+        test = ciphers.rot13.cipher(plaintext="This is testing spaces!?")
         self.assertIn(' ',  test)
 
     def test_has_special_chars(self):
         """
         Does not remove special characters.
         """
-        test = ROT13.encode(plaintext="This is testing special characters!?.")
+        test = ciphers.rot13.cipher(plaintext="This is testing special characters!?.")
         self.assertIn('!?.', test)
 
     def test_expected_output(self):
         """
         Confirm expected output.
         """
-        test = ROT13.encode(plaintext="Test.")
+        test = ciphers.rot13.cipher(plaintext="Test.")
         self.assertEqual(test, 'Grfg.')
 
 
