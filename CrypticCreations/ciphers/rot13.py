@@ -32,3 +32,5 @@ class Rot13Cipher:
         """
 
         return [self.encipher()]
+
+    # TODO: Create decipher function that accepts self.creation_type value from Creations Class
