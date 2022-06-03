@@ -1,5 +1,5 @@
 from .creations import *
-from . import ciphers
+from .ciphers import *
 
 
 class CipherCreation(Creation):
@@ -21,7 +21,7 @@ class CipherCreation(Creation):
         if not self.cipher_types:
             self.creation = self.plaintext
 
-        self.creation = ciphers.caeser.cipher(plaintext=self.creation, shift=shift)
+        self.creation = CaeserCipher(text=self.creation, shift=shift).encipher()
 
         _ = {
             "cipher": CipherType.CAESER_CIPHER,
@@ -37,7 +37,7 @@ class CipherCreation(Creation):
         """
         if not self.creation:
             self.creation = self.plaintext
-        return ciphers.caeser.bruteforce(ciphered_text=self.creation)
+        return CaeserCipher(text=self.creation).bruteforce()
 
     def rot13(self) -> str:
         """
@@ -47,7 +47,7 @@ class CipherCreation(Creation):
         if not self.cipher_types:
             self.creation = self.plaintext
 
-        self.creation = ciphers.rot13.cipher(plaintext=self.creation)
+        self.creation = Rot13Cipher(text=self.creation).encipher()
 
         _ = {
             "cipher": CipherType.ROT13_CIPHER
@@ -63,4 +63,4 @@ class CipherCreation(Creation):
 
         if not self.creation:
             self.creation = self.plaintext
-        return ciphers.rot13.bruteforce(ciphered_text=self.creation)
+        return Rot13Cipher(text=self.creation).bruteforce()
