@@ -14,6 +14,22 @@ class CipherCreation(Creation):
         self.plaintext = self._sanitize(user_input=plaintext)
         self.cipher_types: list = []
 
+    def cipher(self, cipher_name: str, **kwargs):
+        """
+        SOURCE: https://www.danielmorell.com/blog/dynamically-calling-functions-in-python-safely
+        """
+
+        cipher_name = super()._sanitize(user_input=cipher_name)
+        kwargs["plaintext"] = self.creation
+        print(f"{kwargs=}")
+        if hasattr(ciphers, cipher_name) and callable(cipher := getattr(ciphers, cipher_name).cipher):
+            print(f"Starting function {cipher_name}()")
+            print(f"{cipher(**kwargs)=}")
+            self.creation = cipher(**kwargs)
+            return self.creation
+        else:
+            return f"Error: function {cipher_name}() does not exist."
+
     def caeser(self, shift: int) -> str:
         """
         Utilize Basic Caeser Cipher. Numbers and special characters are ignored.
