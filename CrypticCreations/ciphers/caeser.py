@@ -21,6 +21,9 @@ def cipher(plaintext: str, shift: int) -> str:
 
 
 def bruteforce(ciphered_text: str) -> list:
+    """
+    Used to get a list every possible cipher for the input ciphered_text.
+    """
     bf_results = []
     for i in range(1, 26):
         bf_results.append(cipher(plaintext=ciphered_text, shift=i))
