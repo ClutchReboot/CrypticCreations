@@ -26,6 +26,34 @@ class TestCipherCreations(unittest.TestCase):
         test = Tools().index_to_ascii(index=2, capitalize=True)
         self.assertEqual(test,  'C')
 
+    def test_character_is_ascii_true(self):
+        """
+        Result is capitalized.
+        """
+        test = Tools().is_ascii_letter(character='a')
+        self.assertEqual(test,  True)
+
+    def test_character_is_ascii_false(self):
+        """
+        Result is capitalized.
+        """
+        test = Tools().is_ascii_letter(character='1')
+        self.assertEqual(test, False)
+
+    def test_character_is_not_ascii_true(self):
+        """
+        Result is capitalized.
+        """
+        test = Tools().is_not_ascii_letter(character='1')
+        self.assertEqual(test,  True)
+
+    def test_character_is_not_ascii_false(self):
+        """
+        Result is capitalized.
+        """
+        test = Tools().is_not_ascii_letter(character='a')
+        self.assertEqual(test, False)
+
 
 if __name__ == '__main__':
     unittest.main()

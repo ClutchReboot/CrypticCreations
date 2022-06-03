@@ -1,3 +1,6 @@
+import string
+
+
 class Tools:
 
     @staticmethod
@@ -10,3 +13,11 @@ class Tools:
         if capitalize:
             return chr(index + 65)
         return chr(index + 97)
+
+    @staticmethod
+    def is_ascii_letter(character: str):
+        return character in string.ascii_letters
+
+    @staticmethod
+    def is_not_ascii_letter(character: str):
+        return character not in string.ascii_letters

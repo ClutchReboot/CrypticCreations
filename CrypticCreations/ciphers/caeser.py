@@ -1,4 +1,3 @@
-import string
 from .tools import Tools
 
 
@@ -16,14 +15,12 @@ class CaeserCipher(Tools):
         result = ""
 
         for char in self.text:
-            # Account for spaces and special chars.
-            if char not in string.ascii_letters:
+            if self.is_not_ascii_letter(character=char):  # Account for spaces and special chars.
                 result += char
             elif char.isupper():
                 enciphered_index = (self.ascii_to_index(letter=char) + self.shift) % 26
                 result += self.index_to_ascii(index=enciphered_index, capitalize=True)
             else:
-                # result += chr((ord(char) + self.shift - 97) % 26 + 97)
                 enciphered_index = (self.ascii_to_index(letter=char) + self.shift) % 26
                 result += self.index_to_ascii(index=enciphered_index)
         return result
