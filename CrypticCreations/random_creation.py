@@ -1,8 +1,7 @@
 import random
 import string
 
-from .creations import Creation
-from .creation_types import RandomType
+from .creations import *
 
 
 class RandomCreation(Creation):
