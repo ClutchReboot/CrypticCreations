@@ -40,6 +40,13 @@ class TestCipherCreations(unittest.TestCase):
         test = AffineCipher(text="Test.", a=-9, b=-10).encipher()
         self.assertEqual(test, 'Bgkb.')
 
+    def test_decipher_expected_output(self):
+        """
+        Confirm expected output when using decipher.
+        """
+        test = AffineCipher(text="Fwrra.").decipher()
+        self.assertEqual(test, 'Hello.')
+
 
 if __name__ == '__main__':
     unittest.main()

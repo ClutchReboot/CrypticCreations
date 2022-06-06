@@ -41,6 +41,13 @@ class TestCipherCreations(unittest.TestCase):
         bf_results = CaeserCipher(text=test).bruteforce()
         self.assertIn("Test.", bf_results)
 
+    def test_decipher_expected_output(self):
+        """
+        Confirm decipher returns expected output.
+        """
+        test = CaeserCipher(text="Mjqqt.").decipher()
+        self.assertIn(test, "Hello.")
+
 
 if __name__ == '__main__':
     unittest.main()
