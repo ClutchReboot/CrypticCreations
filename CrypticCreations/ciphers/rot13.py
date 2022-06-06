@@ -26,12 +26,9 @@ class Rot13Cipher(Tools):
                 result += self.index_to_ascii(index=enciphered_index)
         return result
 
-    def bruteforce(self) -> list:
+    def decipher(self) -> str:
         """
-        Used to get a list every possible cipher for the input ciphered_text.
-        Since shift is hard coded, there is only 1 item returned in the list.
+        Since there's only one possibility with ROT13, just call original encipher method.
         """
 
-        return [self.encipher()]
-
-    # TODO: Create decipher function that accepts self.creation_type value from Creations Class
+        return self.encipher()

@@ -8,7 +8,7 @@ class Tools:
         return ord(letter.lower()) - 97
 
     @staticmethod
-    def index_to_ascii(index: str, capitalize: bool = False):
+    def index_to_ascii(index: int, capitalize: bool = False):
         index = index % 26
         if capitalize:
             return chr(index + 65)

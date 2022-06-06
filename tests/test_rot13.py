@@ -26,12 +26,12 @@ class TestCipherCreations(unittest.TestCase):
         test = Rot13Cipher(text="Test.").encipher()
         self.assertEqual(test, 'Grfg.')
 
-    def test_bruteforce_expected_output(self):
+    def test_decipher_expected_output(self):
         """
-        Confirm expected output.
+        Confirms plaintext string exists in the bruteforce return list.
         """
-        test = Rot13Cipher(text="Grfg.").bruteforce()
-        self.assertEqual(test, ['Test.'])
+        test = Rot13Cipher(text="Uryyb.").decipher()
+        self.assertIn(test, "Hello.")
 
 
 if __name__ == '__main__':
