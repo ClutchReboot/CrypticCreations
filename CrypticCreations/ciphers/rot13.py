@@ -2,7 +2,7 @@ from .tools import Tools
 
 
 class Rot13Cipher(Tools):
-    def __init__(self, text: str):
+    def __init__(self, text: str) -> None:
         self.text = text
 
     def encipher(self) -> str:

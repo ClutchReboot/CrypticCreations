@@ -2,7 +2,7 @@ from .tools import Tools
 
 
 class CaeserCipher(Tools):
-    def __init__(self, text: str, shift: int = 5):
+    def __init__(self, text: str, shift: int = 5) -> None:
         self.text = text
         self.shift = shift
 
@@ -44,7 +44,7 @@ class CaeserCipher(Tools):
                 result += self.index_to_ascii(index=enciphered_index)
         return result
 
-    def bruteforce(self) -> list:
+    def bruteforce(self) -> list[str]:
         """
         Used to get a list every possible cipher for the input ciphered_text.
         """

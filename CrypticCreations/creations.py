@@ -29,7 +29,7 @@ class Creation:
         self._punctuation: str = ".....!?"
 
     @staticmethod
-    def _sanitize(user_input: str | list) -> str | list:
+    def _sanitize(user_input: str | list[str]) -> str | list[str]:
         """
         Remove unwanted characters based on a regex substitution.
         :param user_input: Input that may have unwanted characters.

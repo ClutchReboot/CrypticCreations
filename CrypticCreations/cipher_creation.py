@@ -3,7 +3,7 @@ from .ciphers import *
 
 
 class CipherCreation(Creation):
-    def __init__(self, text: str):
+    def __init__(self, text: str) -> None:
         """
         initial_string is used to hold the original input used for the ciphers.
         cipher_types is an array of all ciphers used and their modifiers on the initial_string

@@ -2,7 +2,7 @@ from .tools import Tools
 
 
 class AffineCipher(Tools):
-    def __init__(self, text: str, a: int = 3, b: int = 10):
+    def __init__(self, text: str, a: int = 3, b: int = 10) -> None:
         """
         Figures out inverse of a for decipher usage.
 
@@ -20,7 +20,7 @@ class AffineCipher(Tools):
                 self.inverse_a = i
         assert 0 <= self.inverse_a <= 25, f'Invalid key: a={self.a}, no inverse exists (mod 26)'
 
-    def encipher(self):
+    def encipher(self) -> str:
         result = ''
         for char in self.text:
             if self.is_not_ascii_letter(character=char):  # Account for spaces and special chars.
@@ -33,7 +33,7 @@ class AffineCipher(Tools):
                 result += self.index_to_ascii(index=enciphered_index)
         return result
 
-    def decipher(self):
+    def decipher(self) -> str:
         result = ''
         for char in self.text:
             if self.is_not_ascii_letter(character=char):  # Account for spaces and special chars.
